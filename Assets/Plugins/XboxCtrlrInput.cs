@@ -50,8 +50,9 @@ namespace XboxCtrlrInput
 		DPadUp,
 		DPadDown,
 		DPadLeft,
-		DPadRight
-	}
+		DPadRight,
+        None
+    }
 	
 	/// <summary>
 	/// 	List of enumerated identifiers for Xbox D-Pad directions.
@@ -61,8 +62,9 @@ namespace XboxCtrlrInput
 		Up,
 		Down,
 		Left,
-		Right
-	}
+		Right,
+        None
+    }
 	
 	/// <summary>
 	/// 	List of enumerated identifiers for Xbox axis.
@@ -74,7 +76,8 @@ namespace XboxCtrlrInput
 		RightStickX,
 		RightStickY,
 		LeftTrigger,
-		RightTrigger
+		RightTrigger,
+        None
 	}
 	
 	// ================ Classes =================== //
