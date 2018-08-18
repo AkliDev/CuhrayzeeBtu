@@ -20,6 +20,6 @@ public class InputTest : MonoBehaviour
     private void Update()
     {    
         m_Text.text = ((int)GameManager.instance.InputManager.GetDirection(m_Controller).notation).ToString();
-        m_Transform.position = transform.parent.position + (Vector3)GameManager.instance.InputManager.GetDirection(m_Controller).direction * m_PositionOffset;
+        m_Transform.localPosition = Vector3.zero + (Vector3)GameManager.instance.InputManager.GetDirection(m_Controller).direction * m_PositionOffset;
     }
 }
