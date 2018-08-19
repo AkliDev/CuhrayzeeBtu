@@ -5,32 +5,6 @@ using XboxCtrlrInput;
 
 namespace GameInput
 {
-    public enum Direction
-    {
-        DownLeft = 1,
-        Down = 2,
-        DownRight = 3,
-        Left = 4,
-        Neutral = 5,
-        Right = 6,
-        UpLeft = 7,
-        Up = 8,
-        UpRight = 9,
-    }
-
-    public struct InputDirection
-    {
-        public Direction notation;
-        public Vector2 direction;
-
-        public InputDirection(Direction Notation, Vector2 Direction)
-        {
-            notation = Notation;
-            direction = Direction;
-        }
-
-    }
-
     public class InputManager
     {
         private VirtualController[] m_Controllers;
@@ -52,52 +26,39 @@ namespace GameInput
             Init();
         }
 
-        public VirtualController GetController(XboxController id)
+        public ButtonState GetButtonState(XboxController id, Button button)
+        {
+            int idToCheck = (int)id - 1;
+            if (idToCheck < 0 || idToCheck > m_Controllers.Length - 1)
+                return ButtonState.NotPressed;
+
+            return m_Controllers[idToCheck].GetButton(button).GetButtonState();
+        }
+
+        public float GetButtonHeldTime(XboxController id, Button button)
+        {
+            int idToCheck = (int)id - 1;
+            if (idToCheck < 0 || idToCheck > m_Controllers.Length - 1)
+                return 0;
+
+            return m_Controllers[idToCheck].GetButtonHeldTime(button);
+        }
+
+        public InputDirection GetDirection(XboxController id)
         {
             int idToCheck = (int)id - 1;
             if (idToCheck < 0 || idToCheck > m_Controllers.Length - 1)
                 return null;
 
-            return m_Controllers[idToCheck];
-
+            return m_Controllers[idToCheck].GetDirection();
         }
 
-         //5+(raw horizontal axis)+(3*raw vertical axis) 
-        public InputDirection GetDirection(XboxController id)
+        public void Update()
         {
-            InputDirection dir = new InputDirection(Direction.Neutral, Vector2.zero);
-
-            int idToCheck = (int)id - 1;
-            if (idToCheck < 0 || idToCheck > m_Controllers.Length - 1)
-                //return InputDirection.Neutral;
-                return dir;
-
-
-            if (m_Controllers[idToCheck].GetButton(Button.Up).GetButtonState() == ButtonState.Down || m_Controllers[idToCheck].GetButton(Button.Up).GetButtonState() == ButtonState.Held)
+            for (int i = 0; i < m_Controllers.Length; i++)
             {
-                dir.notation += 3;
-                dir.direction.y += 1;
+                m_Controllers[i].Update();
             }
-
-            if (m_Controllers[idToCheck].GetButton(Button.Down).GetButtonState() == ButtonState.Down || m_Controllers[idToCheck].GetButton(Button.Down).GetButtonState() == ButtonState.Held)
-            {
-                dir.notation += -3;
-                dir.direction.y += -1;
-            }
-
-            if (m_Controllers[idToCheck].GetButton(Button.Left).GetButtonState() == ButtonState.Down || m_Controllers[idToCheck].GetButton(Button.Left).GetButtonState() == ButtonState.Held)
-            {
-                dir.notation += -1;
-                dir.direction.x += -1;
-            }
-
-            if (m_Controllers[idToCheck].GetButton(Button.Right).GetButtonState() == ButtonState.Down || m_Controllers[idToCheck].GetButton(Button.Right).GetButtonState() == ButtonState.Held)
-            {
-                dir.notation += 1;
-                dir.direction.x += 1;
-            }
-
-            return dir;
         }
     }
 }
