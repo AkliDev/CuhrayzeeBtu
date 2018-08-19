@@ -5,16 +5,18 @@ using XboxCtrlrInput;
 
 public enum ButtonState
 {
+    None = -2,
     Released = -1,
     NotPressed = 0,
     Down = 1,
     Held = 2,
 };
 
-public enum IsPressed
+public enum IsButtonPressed
 {
+    None = -2,
     NotPressed = 0,
-    Pressed = 1
+    IsPressed = 1
 };
 
 namespace GameInput
@@ -86,51 +88,25 @@ namespace GameInput
             if (m_Button != XboxButton.None)
                 if (XCI.GetButton(m_Button, m_ControllerId)) return ButtonState.Held;
             if (m_Axis != null)
-                if (m_Axis.GetState() == ButtonState.Held) return ButtonState.Held;
+                if (m_Axis.State == ButtonState.Held) return ButtonState.Held;
             if (m_Key != KeyCode.None)
                 if (Input.GetKey(m_Key)) return ButtonState.Held;
 
             if (m_Button != XboxButton.None)
                 if (XCI.GetButtonDown(m_Button, m_ControllerId)) return ButtonState.Down;
             if (m_Axis != null)
-                if (m_Axis.GetState() == ButtonState.Down) return ButtonState.Down;
+                if (m_Axis.State == ButtonState.Down) return ButtonState.Down;
             if (m_Key != KeyCode.None)
                 if (Input.GetKeyDown(m_Key)) return ButtonState.Down;
 
             if (m_Button != XboxButton.None)
                 if (XCI.GetButtonUp(m_Button, m_ControllerId)) return ButtonState.Released;
             if (m_Axis != null)
-                if (m_Axis.GetState() == ButtonState.Released) return ButtonState.Released;
+                if (m_Axis.State == ButtonState.Released) return ButtonState.Released;
             if (m_Key != KeyCode.None)
                 if (Input.GetKeyUp(m_Key)) return ButtonState.Released;
 
             return ButtonState.NotPressed;
-        }
-
-        public IsPressed IsButtonPressed()
-        {
-            if (m_Button != XboxButton.None)
-                if (XCI.GetButton(m_Button, m_ControllerId)) return IsPressed.Pressed;
-            if (m_Axis != null)
-                if (m_Axis.GetState() == ButtonState.Held) return IsPressed.Pressed;
-            if (m_Key != KeyCode.None)
-                if (Input.GetKey(m_Key)) return IsPressed.Pressed;
-
-            if (m_Button != XboxButton.None)
-                if (XCI.GetButtonDown(m_Button, m_ControllerId)) return IsPressed.Pressed;
-            if (m_Axis != null)
-                if (m_Axis.GetState() == ButtonState.Down) return IsPressed.Pressed;
-            if (m_Key != KeyCode.None)
-                if (Input.GetKeyDown(m_Key)) return IsPressed.Pressed;
-
-            if (m_Button != XboxButton.None)
-                if (XCI.GetButtonUp(m_Button, m_ControllerId)) return IsPressed.NotPressed;
-            if (m_Axis != null)
-                if (m_Axis.GetState() == ButtonState.Released) return IsPressed.NotPressed;
-            if (m_Key != KeyCode.None)
-                if (Input.GetKeyUp(m_Key)) return IsPressed.NotPressed;
-
-            return IsPressed.NotPressed;
         }
     }
 }

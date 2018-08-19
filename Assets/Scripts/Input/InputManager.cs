@@ -32,7 +32,16 @@ namespace GameInput
             if (idToCheck < 0 || idToCheck > m_Controllers.Length - 1)
                 return ButtonState.NotPressed;
 
-            return m_Controllers[idToCheck].GetButton(button).GetButtonState();
+            return m_Controllers[idToCheck].GetButtonState(button);
+        }
+
+        public IsButtonPressed CheckIsButtonPressed(XboxController id, Button button)
+        {
+            int idToCheck = (int)id - 1;
+            if (idToCheck < 0 || idToCheck > m_Controllers.Length - 1)
+                return IsButtonPressed.NotPressed;
+
+            return m_Controllers[idToCheck].CheckIsButtonPressed(button);
         }
 
         public float GetButtonHeldTime(XboxController id, Button button)

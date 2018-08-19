@@ -27,7 +27,8 @@ public class InputTest : MonoBehaviour
         for (int i = 0; i < m_Buttons.Length; i++)
         {
             m_Timers[i].text = GameManager.instance.InputManager.GetButtonHeldTime(m_Controller, Button.Button1 + i).ToString();
-            if (GameManager.instance.InputManager.GetButtonState(m_Controller, Button.Button1 + i) == ButtonState.Down || GameManager.instance.InputManager.GetButtonState(m_Controller, Button.Button1 + i) == ButtonState.Held)
+
+            if (GameManager.instance.InputManager.CheckIsButtonPressed(m_Controller, Button.Button1 + i) == IsButtonPressed.IsPressed)
             {
                 m_Buttons[i].color = new Color(0.5f, 0.5f, 0.5f);
             }

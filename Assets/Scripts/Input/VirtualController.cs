@@ -44,20 +44,48 @@ namespace GameInput
 
         private VirtualButton[] m_Buttons;
         private float[] m_ButtonHeldTimes;
+        private ButtonState[] m_ButtonStates;
+        private IsButtonPressed[] m_ButtonsPressed;
         private InputDirection m_InputDirection;
         private DirectionNotaton m_PreInputDirection;
 
         public XboxController ControllerID { get { return m_ControllerID; } set { m_ControllerID = value; } }
         public InputDirection InputDirection { get { return m_InputDirection; } }
 
-        public VirtualButton GetButton(Button button)
-        {
-            return m_Buttons[(int)button];
-        }
-
         public float GetButtonHeldTime(Button button)
         {
             return m_ButtonHeldTimes[(int)button];
+        }
+
+        public ButtonState GetButtonState(Button button)
+        {
+            if (m_ButtonStates[(int)button] != ButtonState.None)
+                return m_ButtonStates[(int)button];
+
+            m_ButtonStates[(int)button] = m_Buttons[(int)button].GetButtonState();
+            return m_ButtonStates[(int)button];
+        }
+
+        public IsButtonPressed CheckIsButtonPressed(Button button)
+        {
+            if (m_ButtonsPressed[(int)button] != IsButtonPressed.None)
+                return m_ButtonsPressed[(int)button];
+
+            switch (GetButtonState(button))
+            {
+                case ButtonState.Held:
+                    m_ButtonsPressed[(int)button] = IsButtonPressed.IsPressed;
+                    return m_ButtonsPressed[(int)button];
+
+
+                case ButtonState.Down:
+                    m_ButtonsPressed[(int)button] = IsButtonPressed.IsPressed;
+                    return m_ButtonsPressed[(int)button];
+
+                default:
+                    m_ButtonsPressed[(int)button] = IsButtonPressed.NotPressed;
+                    return m_ButtonsPressed[(int)button];
+            }
         }
 
         private void init()
@@ -65,8 +93,11 @@ namespace GameInput
             m_InputDirection = new InputDirection();
             SetDefaultButtons();  //SetButtonsFromFile();
             m_ButtonHeldTimes = new float[m_Buttons.Length];
+            m_ButtonStates = new ButtonState[m_Buttons.Length];
+            m_ButtonsPressed = new IsButtonPressed[m_Buttons.Length];
         }
 
+        //sets default button configuration for all controllers
         private void SetDefaultButtons()
         {
 
@@ -126,20 +157,26 @@ namespace GameInput
             }
         }
 
-        private void UpdateButtonHeldTimes()
+        private void UpdateButtons()
         {
             for (int i = 0; i < m_Buttons.Length; i++)
             {
+                // reset button states for the current frame;
+                m_ButtonStates[i] = ButtonState.None;
+                m_ButtonsPressed[i] = IsButtonPressed.None;
+
+                //update axis to check for delta's
                 if (m_Buttons[i].Axis != null)
                 {
                     m_Buttons[i].Axis.Update();
                 }
 
-                if (m_Buttons[i].IsButtonPressed() == IsPressed.Pressed)
+                //Update held times for each button
+                if (CheckIsButtonPressed((Button)i) == IsButtonPressed.IsPressed)
                 {
                     m_ButtonHeldTimes[i] += Time.deltaTime;
                 }
-                else 
+                else
                 {
                     m_ButtonHeldTimes[i] = 0;
                 }
@@ -148,7 +185,6 @@ namespace GameInput
 
         public VirtualController(XboxController controllerID)
         {
-            MonoBehaviour.print(controllerID.ToString() + " VirtualController Created");
             ControllerID = controllerID;
             init();
         }
@@ -159,10 +195,10 @@ namespace GameInput
             m_InputDirection.notation = DirectionNotaton.Neutral;
             m_InputDirection.direction = Vector2.zero;
 
-            int up = (int)GetButton(Button.Up).IsButtonPressed();
-            int down = (int)GetButton(Button.Down).IsButtonPressed();
-            int left = (int)GetButton(Button.Left).IsButtonPressed();
-            int right = (int)GetButton(Button.Right).IsButtonPressed();
+            int up = (int)CheckIsButtonPressed(Button.Up);
+            int down = (int)CheckIsButtonPressed(Button.Down);
+            int left = (int)CheckIsButtonPressed(Button.Left);
+            int right = (int)CheckIsButtonPressed(Button.Right);
 
             m_InputDirection.notation += (right - left) + (3 * (up - down));
             m_InputDirection.direction.x = (right - left);
@@ -173,7 +209,7 @@ namespace GameInput
 
         public void Update()
         {
-            UpdateButtonHeldTimes();
+            UpdateButtons();
         }
     }
 }

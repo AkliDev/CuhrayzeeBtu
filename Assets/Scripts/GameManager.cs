@@ -6,7 +6,7 @@ using GameInput;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
+ 
     private InputManager m_Inputmanager;
 
     public InputManager InputManager { get { return m_Inputmanager; } }

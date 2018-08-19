@@ -18,7 +18,11 @@ namespace GameInput
         private XboxAxis m_Axis = XboxAxis.None;
         private ReadAxis m_Readaxis = ReadAxis.None;
         private float m_DeadZone;
+        private float m_CurrentValue;
         private float m_PreValue;
+        private ButtonState m_State;
+
+        public ButtonState State { get { return m_State; } }
 
         public AxisToButton(XboxController controllerId, XboxAxis axis, ReadAxis readAxis, float deadZone)
         {
@@ -30,24 +34,26 @@ namespace GameInput
 
         public void Update()
         {
-            m_PreValue = XCI.GetAxisRaw(m_Axis, m_ControllerId);
+            m_CurrentValue = XCI.GetAxisRaw(m_Axis, m_ControllerId);
+            m_State = SetState();
+            m_PreValue = m_CurrentValue;
         }
 
         //Compares value with previous state to determine what state to return;
-        public ButtonState GetState()
+        public ButtonState SetState()
         {
             switch (m_Readaxis)
             {
+              
                 case ReadAxis.Positive:
-                    if (XCI.GetAxisRaw(m_Axis, m_ControllerId) > m_DeadZone && m_PreValue > m_DeadZone) return ButtonState.Held;
-                    if (XCI.GetAxisRaw(m_Axis, m_ControllerId) > m_DeadZone && m_PreValue < m_DeadZone) return ButtonState.Down;
-                    if (XCI.GetAxisRaw(m_Axis, m_ControllerId) < m_DeadZone && m_PreValue > m_DeadZone) return ButtonState.Released;
-
+                    if (m_CurrentValue > m_DeadZone && m_PreValue > m_DeadZone) return ButtonState.Held;
+                    else if (m_CurrentValue > m_DeadZone && m_PreValue < m_DeadZone) return ButtonState.Down;
+                    else if(m_CurrentValue < m_DeadZone && m_PreValue > m_DeadZone) return ButtonState.Released;
                     break;
                 case ReadAxis.Negative:
-                    if (XCI.GetAxisRaw(m_Axis, m_ControllerId) < -m_DeadZone && m_PreValue < -m_DeadZone) return ButtonState.Held;
-                    if (XCI.GetAxisRaw(m_Axis, m_ControllerId) < -m_DeadZone && m_PreValue > -m_DeadZone) return ButtonState.Down;
-                    if (XCI.GetAxisRaw(m_Axis, m_ControllerId) > -m_DeadZone && m_PreValue < -m_DeadZone) return ButtonState.Released;
+                    if (m_CurrentValue < -m_DeadZone && m_PreValue < -m_DeadZone) return ButtonState.Held;
+                    else if (m_CurrentValue < -m_DeadZone && m_PreValue > -m_DeadZone) return ButtonState.Down;
+                    else if (m_CurrentValue > -m_DeadZone && m_PreValue < -m_DeadZone) return ButtonState.Released;
                     break;
             }
            
