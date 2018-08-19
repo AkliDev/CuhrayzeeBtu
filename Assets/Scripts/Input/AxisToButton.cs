@@ -33,6 +33,7 @@ namespace GameInput
             m_PreValue = XCI.GetAxisRaw(m_Axis, m_ControllerId);
         }
 
+        //Compares value with previous state to determine what state to return;
         public ButtonState GetState()
         {
             switch (m_Readaxis)
