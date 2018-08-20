@@ -26,7 +26,7 @@ namespace GameInput
             Init();
         }
 
-        public ButtonState GetButtonState(XboxController id, Button button)
+        public ButtonState GetButtonState(XboxController id, VButton button)
         {
             int idToCheck = (int)id - 1;
             if (idToCheck < 0 || idToCheck > m_Controllers.Length - 1)
@@ -35,7 +35,7 @@ namespace GameInput
             return m_Controllers[idToCheck].GetButtonState(button);
         }
 
-        public IsButtonPressed CheckIsButtonPressed(XboxController id, Button button)
+        public IsButtonPressed CheckIsButtonPressed(XboxController id, VButton button)
         {
             int idToCheck = (int)id - 1;
             if (idToCheck < 0 || idToCheck > m_Controllers.Length - 1)
@@ -44,7 +44,7 @@ namespace GameInput
             return m_Controllers[idToCheck].CheckIsButtonPressed(button);
         }
 
-        public float GetButtonHeldTime(XboxController id, Button button)
+        public float GetButtonHeldTime(XboxController id, VButton button)
         {
             int idToCheck = (int)id - 1;
             if (idToCheck < 0 || idToCheck > m_Controllers.Length - 1)

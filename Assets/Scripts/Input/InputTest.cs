@@ -4,6 +4,8 @@ using UnityEngine;
 using XboxCtrlrInput;
 using TMPro;
 using UnityEngine.UI;
+using GameInput;
+
 
 public class InputTest : MonoBehaviour
 {
@@ -26,9 +28,9 @@ public class InputTest : MonoBehaviour
 
         for (int i = 0; i < m_Buttons.Length; i++)
         {
-            m_Timers[i].text = GameManager.instance.InputManager.GetButtonHeldTime(m_Controller, Button.Button1 + i).ToString();
+            m_Timers[i].text = GameManager.instance.InputManager.GetButtonHeldTime(m_Controller, VButton.Button1 + i).ToString();
 
-            if (GameManager.instance.InputManager.CheckIsButtonPressed(m_Controller, Button.Button1 + i) == IsButtonPressed.IsPressed)
+            if (GameManager.instance.InputManager.CheckIsButtonPressed(m_Controller, VButton.Button1 + i) == IsButtonPressed.IsPressed)
             {
                 m_Buttons[i].color = new Color(0.5f, 0.5f, 0.5f);
             }

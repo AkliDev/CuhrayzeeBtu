@@ -3,35 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using XboxCtrlrInput;
 
-public enum Button
-{
-    Up,
-    Down,
-    Left,
-    Right,
-    Button1,
-    Button2,
-    Button3,
-    Button4,
-    Button5,
-    Button6
-}
 
-public enum DirectionNotaton
-{
-    DownLeft = 1,
-    Down = 2,
-    DownRight = 3,
-    Left = 4,
-    Neutral = 5,
-    Right = 6,
-    UpLeft = 7,
-    Up = 8,
-    UpRight = 9,
-}
 
 namespace GameInput
 {
+    public enum VButton
+    {
+        Up,
+        Down,
+        Left,
+        Right,
+        Button1,
+        Button2,
+        Button3,
+        Button4,
+        Button5,
+        Button6,
+        BUTTONS_MAX
+    }
+
+    public enum DirectionNotaton
+    {
+        DownLeft = 1,
+        Down = 2,
+        DownRight = 3,
+        Left = 4,
+        Neutral = 5,
+        Right = 6,
+        UpLeft = 7,
+        Up = 8,
+        UpRight = 9,
+    }
+
     public class InputDirection
     {
         public DirectionNotaton notation = DirectionNotaton.Neutral;
@@ -52,12 +55,12 @@ namespace GameInput
         public XboxController ControllerID { get { return m_ControllerID; } set { m_ControllerID = value; } }
         public InputDirection InputDirection { get { return m_InputDirection; } }
 
-        public float GetButtonHeldTime(Button button)
+        public float GetButtonHeldTime(VButton button)
         {
             return m_ButtonHeldTimes[(int)button];
         }
 
-        public ButtonState GetButtonState(Button button)
+        public ButtonState GetButtonState(VButton button)
         {
             if (m_ButtonStates[(int)button] != ButtonState.None)
                 return m_ButtonStates[(int)button];
@@ -66,7 +69,7 @@ namespace GameInput
             return m_ButtonStates[(int)button];
         }
 
-        public IsButtonPressed CheckIsButtonPressed(Button button)
+        public IsButtonPressed CheckIsButtonPressed(VButton button)
         {
             if (m_ButtonsPressed[(int)button] != IsButtonPressed.None)
                 return m_ButtonsPressed[(int)button];
@@ -76,7 +79,6 @@ namespace GameInput
                 case ButtonState.Held:
                     m_ButtonsPressed[(int)button] = IsButtonPressed.IsPressed;
                     return m_ButtonsPressed[(int)button];
-
 
                 case ButtonState.Down:
                     m_ButtonsPressed[(int)button] = IsButtonPressed.IsPressed;
@@ -105,12 +107,12 @@ namespace GameInput
             {
                 case XboxController.First:
 
-                    m_Buttons = new VirtualButton[10]
+                    m_Buttons = new VirtualButton[(int)VButton.BUTTONS_MAX]
                     {
-                         new VirtualButton(m_ControllerID, KeyCode.W, XboxButton.DPadUp, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Positive,0.3f)),
-                         new VirtualButton(m_ControllerID, KeyCode.S, XboxButton.DPadDown, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Negative,0.3f)),
-                         new VirtualButton(m_ControllerID, KeyCode.A, XboxButton.DPadLeft, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Negative,0.3f)),
-                         new VirtualButton(m_ControllerID, KeyCode.D, XboxButton.DPadRight, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Positive,0.3f)),
+                         new VirtualButton(m_ControllerID, KeyCode.W, XboxButton.DPadUp, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Positive,0.5f)),
+                         new VirtualButton(m_ControllerID, KeyCode.S, XboxButton.DPadDown, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Negative,0.5f)),
+                         new VirtualButton(m_ControllerID, KeyCode.A, XboxButton.DPadLeft, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Negative,0.5f)),
+                         new VirtualButton(m_ControllerID, KeyCode.D, XboxButton.DPadRight, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Positive,0.5f)),
                          new VirtualButton(m_ControllerID, KeyCode.U, XboxButton.X),
                          new VirtualButton(m_ControllerID, KeyCode.I, XboxButton.Y),
                          new VirtualButton(m_ControllerID, KeyCode.O, XboxButton.RightBumper),
@@ -122,12 +124,12 @@ namespace GameInput
 
                 case XboxController.Second:
 
-                    m_Buttons = new VirtualButton[10]
+                    m_Buttons = new VirtualButton[(int)VButton.BUTTONS_MAX]
                     {
-                         new VirtualButton(m_ControllerID, KeyCode.UpArrow, XboxButton.DPadUp, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Positive,0.3f)),
-                         new VirtualButton(m_ControllerID, KeyCode.DownArrow, XboxButton.DPadDown, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Negative,0.3f)),
-                         new VirtualButton(m_ControllerID, KeyCode.LeftArrow, XboxButton.DPadLeft, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Negative,0.3f)),
-                         new VirtualButton(m_ControllerID, KeyCode.RightArrow, XboxButton.DPadRight, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Positive,0.3f)),
+                         new VirtualButton(m_ControllerID, KeyCode.UpArrow, XboxButton.DPadUp, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Positive,0.5f)),
+                         new VirtualButton(m_ControllerID, KeyCode.DownArrow, XboxButton.DPadDown, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Negative,0.5f)),
+                         new VirtualButton(m_ControllerID, KeyCode.LeftArrow, XboxButton.DPadLeft, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Negative,0.5f)),
+                         new VirtualButton(m_ControllerID, KeyCode.RightArrow, XboxButton.DPadRight, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Positive,0.5f)),
                          new VirtualButton(m_ControllerID, KeyCode.Keypad7, XboxButton.X),
                          new VirtualButton(m_ControllerID, KeyCode.Keypad8, XboxButton.Y),
                          new VirtualButton(m_ControllerID, KeyCode.Keypad9, XboxButton.RightBumper),
@@ -139,12 +141,12 @@ namespace GameInput
 
                 default:
 
-                    m_Buttons = new VirtualButton[10]
+                    m_Buttons = new VirtualButton[(int)VButton.BUTTONS_MAX]
                     {
-                         new VirtualButton(m_ControllerID, KeyCode.None, XboxButton.DPadUp, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Positive,0.3f)),
-                         new VirtualButton(m_ControllerID, KeyCode.None, XboxButton.DPadDown, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Negative,0.3f)),
-                         new VirtualButton(m_ControllerID, KeyCode.None, XboxButton.DPadLeft, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Negative,0.3f)),
-                         new VirtualButton(m_ControllerID, KeyCode.None, XboxButton.DPadRight, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Positive,0.3f)),
+                         new VirtualButton(m_ControllerID, KeyCode.None, XboxButton.DPadUp, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Positive,0.5f)),
+                         new VirtualButton(m_ControllerID, KeyCode.None, XboxButton.DPadDown, new AxisToButton(m_ControllerID,XboxAxis.LeftStickY,AxisToButton.ReadAxis.Negative,0.5f)),
+                         new VirtualButton(m_ControllerID, KeyCode.None, XboxButton.DPadLeft, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Negative,0.5f)),
+                         new VirtualButton(m_ControllerID, KeyCode.None, XboxButton.DPadRight, new AxisToButton(m_ControllerID,XboxAxis.LeftStickX,AxisToButton.ReadAxis.Positive,0.5f)),
                          new VirtualButton(m_ControllerID, KeyCode.None, XboxButton.X),
                          new VirtualButton(m_ControllerID, KeyCode.None, XboxButton.Y),
                          new VirtualButton(m_ControllerID, KeyCode.None, XboxButton.RightBumper),
@@ -172,7 +174,7 @@ namespace GameInput
                 }
 
                 //Update held times for each button
-                if (CheckIsButtonPressed((Button)i) == IsButtonPressed.IsPressed)
+                if (CheckIsButtonPressed((VButton)i) == IsButtonPressed.IsPressed)
                 {
                     m_ButtonHeldTimes[i] += Time.deltaTime;
                 }
@@ -195,10 +197,10 @@ namespace GameInput
             m_InputDirection.notation = DirectionNotaton.Neutral;
             m_InputDirection.direction = Vector2.zero;
 
-            int up = (int)CheckIsButtonPressed(Button.Up);
-            int down = (int)CheckIsButtonPressed(Button.Down);
-            int left = (int)CheckIsButtonPressed(Button.Left);
-            int right = (int)CheckIsButtonPressed(Button.Right);
+            int up = (int)CheckIsButtonPressed(VButton.Up);
+            int down = (int)CheckIsButtonPressed(VButton.Down);
+            int left = (int)CheckIsButtonPressed(VButton.Left);
+            int right = (int)CheckIsButtonPressed(VButton.Right);
 
             m_InputDirection.notation += (right - left) + (3 * (up - down));
             m_InputDirection.direction.x = (right - left);

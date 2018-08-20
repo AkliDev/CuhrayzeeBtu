@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using XboxCtrlrInput;
 
-public enum ButtonState
-{
-    None = -2,
-    Released = -1,
-    NotPressed = 0,
-    Down = 1,
-    Held = 2,
-};
 
-public enum IsButtonPressed
-{
-    None = -2,
-    NotPressed = 0,
-    IsPressed = 1
-};
 
 namespace GameInput
 {
+    public enum ButtonState
+    {
+        None = -2,
+        Released = -1,
+        NotPressed = 0,
+        Down = 1,
+        Held = 2,
+    };
+
+    public enum IsButtonPressed
+    {
+        None = -2,
+        NotPressed = 0,
+        IsPressed = 1
+    };
+
     public class VirtualButton
     {
         private XboxController m_ControllerId;
