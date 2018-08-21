@@ -39,6 +39,7 @@ namespace GameInput
     {
         public DirectionNotaton notation = DirectionNotaton.Neutral;
         public Vector2 direction = Vector2.zero;
+        public float heldTime;
     }
 
     public class VirtualController
@@ -51,6 +52,7 @@ namespace GameInput
         private IsButtonPressed[] m_ButtonsPressed;
         private InputDirection m_InputDirection;
         private DirectionNotaton m_PreInputDirection;
+        
 
         public XboxController ControllerID { get { return m_ControllerID; } set { m_ControllerID = value; } }
         public InputDirection InputDirection { get { return m_InputDirection; } }
@@ -159,40 +161,8 @@ namespace GameInput
             }
         }
 
-        private void UpdateButtons()
-        {
-            for (int i = 0; i < m_Buttons.Length; i++)
-            {
-                // reset button states for the current frame;
-                m_ButtonStates[i] = ButtonState.None;
-                m_ButtonsPressed[i] = IsButtonPressed.None;
-
-                //update axis to check for delta's
-                if (m_Buttons[i].Axis != null)
-                {
-                    m_Buttons[i].Axis.Update();
-                }
-
-                //Update held times for each button
-                if (CheckIsButtonPressed((VButton)i) == IsButtonPressed.IsPressed)
-                {
-                    m_ButtonHeldTimes[i] += Time.deltaTime;
-                }
-                else
-                {
-                    m_ButtonHeldTimes[i] = 0;
-                }
-            }
-        }
-
-        public VirtualController(XboxController controllerID)
-        {
-            ControllerID = controllerID;
-            init();
-        }
-
         //5+(raw horizontal axis)+(3*raw vertical axis)
-        public InputDirection GetDirection()
+        private InputDirection SetDirection()
         {
             m_InputDirection.notation = DirectionNotaton.Neutral;
             m_InputDirection.direction = Vector2.zero;
@@ -206,8 +176,58 @@ namespace GameInput
             m_InputDirection.direction.x = (right - left);
             m_InputDirection.direction.y = (up - down);
 
+            m_InputDirection.heldTime += Time.deltaTime;
+
+            //if current direction is different from previous direction? restart timer
+            if (m_InputDirection.notation != m_PreInputDirection)
+            {
+                m_InputDirection.heldTime = Time.deltaTime;
+            }
+
+            //store held direction of previous frames 
+            m_PreInputDirection = m_InputDirection.notation;
+
             return InputDirection;
         }
+
+        private void UpdateButtons()
+        {
+            for (int i = 0; i < m_Buttons.Length; i++)
+            {
+                //Reset button states for the start of current frame;
+                m_ButtonStates[i] = ButtonState.None;
+                m_ButtonsPressed[i] = IsButtonPressed.None;
+
+                
+
+                //Update axis to check for delta's
+                if (m_Buttons[i].Axis != null)
+                {
+                    m_Buttons[i].Axis.Update();
+                }
+            
+                //Update held times for each button
+                if (CheckIsButtonPressed((VButton)i) == IsButtonPressed.IsPressed)
+                {
+                    m_ButtonHeldTimes[i] += Time.deltaTime;
+                }
+                else
+                {
+                    m_ButtonHeldTimes[i] = 0;
+                }
+            }
+            
+            // update InputDirection
+            SetDirection();
+        }
+
+        public VirtualController(XboxController controllerID)
+        {
+            ControllerID = controllerID;
+            init();
+        }
+
+        
 
         public void Update()
         {

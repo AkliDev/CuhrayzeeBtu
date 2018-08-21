@@ -82,7 +82,6 @@ public class Sol : MonoBehaviour
         
         _Animator.SetInteger("State", (int)_AnimationState);
     }
-
 }
 
 public class Idle : IState

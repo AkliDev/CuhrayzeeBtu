@@ -13,7 +13,8 @@ public class InputTest : MonoBehaviour
     [SerializeField] private float m_PositionOffset;
     
     [Header("Stick")]
-    [SerializeField] private TextMeshProUGUI m_Text;
+    [SerializeField] private TextMeshProUGUI m_DirectionText;
+    [SerializeField] private TextMeshProUGUI m_TimerText;
     [SerializeField] private RectTransform m_Transform;
 
     [Header("buttons")]
@@ -22,8 +23,10 @@ public class InputTest : MonoBehaviour
 
 
     private void Update()
-    {    
-        m_Text.text = ((int)GameManager.instance.InputManager.GetDirection(m_Controller).notation).ToString();
+    {
+        InputDirection inputDirection = GameManager.instance.InputManager.GetDirection(m_Controller);
+        m_DirectionText.text = ((int)inputDirection.notation).ToString();
+        m_TimerText.text = inputDirection.heldTime.ToString();
         m_Transform.localPosition = Vector3.zero + (Vector3)GameManager.instance.InputManager.GetDirection(m_Controller).direction * m_PositionOffset;
 
         for (int i = 0; i < m_Buttons.Length; i++)

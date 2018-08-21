@@ -43,17 +43,18 @@ namespace GameInput
         public ButtonState SetState()
         {
             switch (m_Readaxis)
-            {
-              
+            {        
                 case ReadAxis.Positive:
                     if (m_CurrentValue > m_DeadZone && m_PreValue > m_DeadZone) return ButtonState.Held;
                     else if (m_CurrentValue > m_DeadZone && m_PreValue < m_DeadZone) return ButtonState.Down;
-                    else if(m_CurrentValue < m_DeadZone && m_PreValue > m_DeadZone) return ButtonState.Released;
-                    break;
+                    else if (m_CurrentValue < m_DeadZone && m_PreValue > m_DeadZone) return ButtonState.Released;
+                    else if (m_CurrentValue > m_DeadZone) return ButtonState.Down;
+                        break;
                 case ReadAxis.Negative:
                     if (m_CurrentValue < -m_DeadZone && m_PreValue < -m_DeadZone) return ButtonState.Held;
                     else if (m_CurrentValue < -m_DeadZone && m_PreValue > -m_DeadZone) return ButtonState.Down;
                     else if (m_CurrentValue > -m_DeadZone && m_PreValue < -m_DeadZone) return ButtonState.Released;
+                    else if (m_CurrentValue < -m_DeadZone) return ButtonState.Down;
                     break;
             }
            

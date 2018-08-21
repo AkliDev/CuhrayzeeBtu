@@ -59,9 +59,10 @@ namespace GameInput
             if (idToCheck < 0 || idToCheck > m_Controllers.Length - 1)
                 return null;
 
-            return m_Controllers[idToCheck].GetDirection();
+            return m_Controllers[idToCheck].InputDirection;
         }
 
+       
         public void Update()
         {
             for (int i = 0; i < m_Controllers.Length; i++)
