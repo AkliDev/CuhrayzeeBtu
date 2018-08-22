@@ -15,12 +15,13 @@ namespace GameInput
         }
 
         private XboxController m_ControllerId;
+        private ButtonState m_State;
         private XboxAxis m_Axis = XboxAxis.None;
         private ReadAxis m_Readaxis = ReadAxis.None;
         private float m_DeadZone;
         private float m_CurrentValue;
         private float m_PreValue;
-        private ButtonState m_State;
+       
 
         public ButtonState State { get { return m_State; } }
 

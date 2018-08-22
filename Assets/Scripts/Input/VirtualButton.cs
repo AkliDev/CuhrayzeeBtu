@@ -33,6 +33,7 @@ namespace GameInput
 
         public AxisToButton Axis { get { return m_Axis; } }
 
+        #region Constructors
         public VirtualButton(XboxController controller)
         {
             m_ControllerId = controller;
@@ -84,6 +85,8 @@ namespace GameInput
             m_Button = button;
             m_Axis = axis;
         }
+
+# endregion
 
         public ButtonState GetButtonState()
         {
