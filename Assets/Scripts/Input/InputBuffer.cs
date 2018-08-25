@@ -60,8 +60,6 @@ namespace GameInput
             AddToBuffer();
             UpdateDirectionHeldTimer();
 
-           
-
             m_PreDirectionInput = m_CurrentDirectionInput.notation;
         }
     }

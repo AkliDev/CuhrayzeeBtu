@@ -488,7 +488,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 4.97
   m_Depth: -1
   m_CullingMask:
@@ -2049,7 +2049,6 @@ MonoBehaviour:
   - {fileID: 1774267262}
   - {fileID: 1292540596}
   m_Arrow: {fileID: 21300000, guid: 9764a8d153eab0242b516d755ab4f4ee, type: 3}
-  m_BufferImage: []
 --- !u!1 &1514448537
 GameObject:
   m_ObjectHideFlags: 0
