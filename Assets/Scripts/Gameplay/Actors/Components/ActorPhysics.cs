@@ -19,9 +19,9 @@ public class ActorPhysics : MonoBehaviour {
     {
         _transform = transform.parent;
 
-        HorizontalMovement = new AxisMovement(Vector3.right, _transform);
-        VerticalMovement = new AxisMovement(Vector3.up, _transform);
-        DepthMovement = new AxisMovement(Vector3.forward, _transform);
+        HorizontalMovement = new AxisMovement(Vector3.right);
+        VerticalMovement = new AxisMovement(Vector3.up);
+        DepthMovement = new AxisMovement(Vector3.forward);
 
         _velocity = Vector3.zero;
     }
@@ -105,31 +105,21 @@ public class AxisMovement
     private float _step;
 
     private float _targetVelocity;
-    private bool _isTargetingTransform;
-    private Transform _transform;
-    private Transform _targetTransform;
-    private Vector3 _targetOffset;
 
-    public AxisMovement(Vector3 direction, Transform transform)
+    public AxisMovement(Vector3 direction)
     {
         _direction = direction.normalized;
         _velocity = 0f;
         _step = 0f;
 
         _targetVelocity = 0f;
-        _transform = transform;
-        _isTargetingTransform = false;
-        _targetOffset = Vector3.zero;
     }
 
     public void UpdateVelocity()
     {
         if (_velocity != _targetVelocity && _step != 0f)
         {
-            if (_isTargetingTransform)
-                _velocity = Mathf.MoveTowards(_velocity, Vector3.Scale(_targetTransform.position - _transform.position, _direction).magnitude, _step * Time.deltaTime);
-            else
-                _velocity = Mathf.MoveTowards(_velocity, _targetVelocity, _step * Time.deltaTime);
+            _velocity = Mathf.MoveTowards(_velocity, _targetVelocity, _step * Time.deltaTime);
         }  
     }
 
@@ -145,14 +135,6 @@ public class AxisMovement
 
     public void SetTargetVelocity(float target)
     {
-        _isTargetingTransform = false;
         _targetVelocity = target;
-    }
-
-    public void SetTargetTransform(Transform target, Vector3 targetOffset)
-    {
-        _isTargetingTransform = true;
-        _targetTransform = target;
-        _targetOffset = targetOffset;
     }
 }
